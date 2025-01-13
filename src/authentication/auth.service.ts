@@ -3,7 +3,7 @@ import { User } from "src/models/users/entities/user.entity";
 import { UsersService } from "src/models/users/users.service";
 import { ILogin, IRegister, JwtPayload } from "./interfaces";
 import { JwtService } from "@nestjs/jwt";
-import { plainToClass } from "class-transformer";
+import { plainToClass, plainToInstance } from "class-transformer";
 import { UserEntity } from "src/models/users/serializers";
 
 @Injectable()
@@ -23,9 +23,9 @@ export class AuthService {
         const user: User = await this.userService.findByEmail(inputs.email);
         if (!user) throw new UnauthorizedException('User Not Found');
         const jwtPayload: JwtPayload = { userId: user.id };
-        const jwtToken: string = await this.jwtService.sign(jwtPayload);
+        const jwtToken: string = this.jwtService.sign(jwtPayload);
         return {
-            user: plainToClass(UserEntity, user, { groups: ['user.createdAt', 'user.updatedAt'] }),
+            user: plainToInstance(UserEntity, user, { groups: ['user.createdAt', 'user.updatedAt'] }),
             accessToken: jwtToken,
         }
     }
@@ -38,7 +38,7 @@ export class AuthService {
         const jwtPayload: JwtPayload = { userId: createdUser.id };
         const jwtToken: string = this.jwtService.sign(jwtPayload);
         return {
-            user: plainToClass(UserEntity, createdUser, { groups: ['user.createdAt', 'user.updatedAt'] }),
+            user: plainToInstance(UserEntity, createdUser, { groups: ['user.createdAt', 'user.updatedAt'] }),
             acessToken: jwtToken,
         };
     }

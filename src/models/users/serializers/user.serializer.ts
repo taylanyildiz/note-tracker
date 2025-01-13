@@ -11,15 +11,19 @@ export class UserEntity extends ModelEntity implements IUser {
     @Expose({ groups: ['admin', 'user.id'] })
     id: number;
 
+    @Expose()
     role: UserRole;
 
     @Expose({ groups: ['admin', 'user.status'] })
     status: boolean;
 
+    @Expose()
     firstName: string;
 
+    @Expose()
     lastName: String;
 
+    @Expose()
     email: string;
 
     @Expose({ groups: ['admin', 'user.status'] })
