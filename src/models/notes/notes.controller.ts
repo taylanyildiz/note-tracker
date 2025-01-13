@@ -3,6 +3,9 @@ import { NotesService } from "./notes.service";
 import { NoteCreateDto } from "./dto";
 import { JwtAuthGuard } from "src/authentication/guards";
 import { SearchNoteDto } from "./dto/search-note.dto";
+import { Roles } from "src/common/decorators/metadata";
+import { UserRole } from "../users/enums";
+import { RolesGuard } from "src/common/guards";
 
 @Controller('notes')
 @UseGuards(JwtAuthGuard)
@@ -18,6 +21,8 @@ export class NotesController {
 
     @Delete(':id')
     @HttpCode(HttpStatus.OK)
+    @UseGuards(RolesGuard)
+    @Roles(UserRole.ADMIN)
     async delete(@Param('id', ParseIntPipe) id: number): Promise<any> {
         await this.notesService.deleteNote(id);
         return {

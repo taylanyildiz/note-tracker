@@ -13,13 +13,15 @@ import { NotesModule } from './models/notes/notes.module';
   imports: [
     AppConfigModule,
     PostgresProviderModule,
+    JwtProviderModule,
     AuthModule,
     UsersModule,
     NotesModule,
-    JwtProviderModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
